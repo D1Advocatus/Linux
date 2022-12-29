@@ -64,7 +64,7 @@ if [ ! -e /etc/xrdp/zorinos.sh ]; then
 cat >> /etc/xrdp/zorinos.sh << EOF
 #!/bin/sh
 export GNOME_SHELL_SESSION_MODE=zorinos
-export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+export XDG_CURRENT_DESKTOP=zorin:GNOME
 exec /etc/xrdp/startwm.sh
 EOF
 chmod a+x /etc/xrdp/zorinos.sh
