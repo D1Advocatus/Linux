@@ -13,7 +13,7 @@ HWE=""
 #HWE="-hwe-22.04"
 
 ###############################################################################
-# Let's update this PC.
+echo "Let's update this PC"
 #
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -53,6 +53,19 @@ sed -i_orig -e 's/port=3389/port=vsock:\/\/-1:3389/g' /etc/xrdp/xrdp.ini
 # Use rdp security
 sed -i_orig -e 's/security_layer=negotiate/security_layer=rdp/g' /etc/xrdp/xrdp.ini
 
+# Add script to setup the ZorinOS session properly
+if [ ! -e /etc/xrdp/zorinos.sh ]; then
+cat >> /etc/xrdp/zorinos.sh << EOF
+#!/bin/sh
+export GNOME_SHELL_SESSION_MODE=zorinos
+export XDG_CURRENT_DESKTOP=zorin:GNOME
+exec /etc/xrdp/startwm.sh
+EOF
+chmod a+x /etc/xrdp/zorinos.sh
+fi
+
+# Use the script to setup the ZorinOS session
+sed -i_orig -e 's/startwm/startzorinos/g' /etc/xrdp/sesman.ini
 # Rename the redirected drives to 'shared-drives'
 sed -i -e 's/FuseMountName=thinclient_drives/FuseMountName=shared-drives/g' /etc/xrdp/sesman.ini
 
