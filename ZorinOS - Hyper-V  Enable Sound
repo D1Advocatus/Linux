@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# This is a scrip to auto install PulseAudio to Zorin 16.2.
+#
+# After the installation, you will be able to route your Hyper-V VM audio to your host machine sound driver.
+#
+# Kudos to Kevin Trent @ https://techbloggingfool.com/2020/12/26/deploy-a-linux-vm-on-hyper-v-with-sound-20-04-edition/
+#
+####################################################################################
+#
+echo "Fetching libpulse-dev - PulseAudio client development headers and libraries"
+sudo apt-get install git libpulse-dev autoconf m4 intltool build-essential dpkg-dev libtool libsndfile-dev libspeexdsp-dev libudev-dev -y
+
+# Enabling repo source to download PulseAudio
+sudo cp /etc/apt/sources.list /etc/apt/sources.list~
+sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+sudo apt-get update
+
+# Builiding Pulse audio from source code
+sudo apt build-dep pulseaudio -y
+
+cd /tmp
+sudo apt source pulseaudio
+
+pulsever=$(pulseaudio --version | awk '{print $2}')
+cd /tmp/pulseaudio-$pulsever
+sudo ./configure
+
+sudo git clone https://github.com/neutrinolabs/pulseaudio-module-xrdp.git
+cd pulseaudio-module-xrdp
+sudo ./bootstrap
+sudo ./configure PULSE_DIR="/tmp/pulseaudio-$pulsever"
+
+sudo make
+
+cd /tmp/pulseaudio-$pulsever/pulseaudio-module-xrdp/src/.libs
+
+sudo install -t "/var/lib/xrdp-pulseaudio-installer" -D -m 644 *.so
+
+pulseaudio -k
+
+echo "Installation completed."
+echo "Reboot your machine and change the Sound Output Device to xrdp sink."
+echo "____________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_________________
+________________________¶¶¶_______________________
+________________________¶¶¶_______________________
+___________¶¶___¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___¶¶__________
+_________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶________
+_________¶¶¶¶¶¶¶¶______¶¶¶¶¶_____¶¶¶¶¶¶¶¶¶________
+__________¶¶¶___________¶¶¶___________¶¶¶_________
+__________¶¶¶___________¶¶¶___________¶¶¶_________
+________¶¶¶¶¶¶__________¶¶¶__________¶¶¶¶¶________
+________¶¶¶¶¶¶__________¶¶¶__________¶¶¶¶¶________
+________¶__¶_¶__________¶¶¶_________¶¶_¶_¶¶_______
+_______¶¶_¶¶_¶¶_________¶¶¶_________¶¶_¶_¶¶_______
+_______¶¶_¶¶__¶_________¶¶¶________¶¶__¶__¶¶______
+______¶¶__¶¶__¶¶________¶¶¶________¶___¶___¶______
+______¶___¶¶___¶¶_______¶¶¶_______¶¶___¶___¶¶_____
+_____¶¶___¶¶___¶¶_______¶¶¶______1¶____¶____¶1____
+____1¶____¶¶____¶¶______¶¶¶______¶1____¶____1¶____
+____¶1____¶¶_____¶______¶¶¶_____¶¶_____¶_____¶¶___
+___¶¶_____¶¶_____¶¶_____¶¶¶_____¶______¶______¶___
+___¶______¶¶______¶¶____¶¶¶____¶¶______¶______¶¶__
+__¶________¶_______¶____¶¶¶____¶_______¶_______¶__
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+___¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_____¶¶¶_____¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__
+______¶¶¶¶¶¶¶¶¶¶___¶¶¶¶¶¶¶¶¶¶¶¶____¶¶¶¶¶¶¶¶¶______
+________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_______________
+_______________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_______________
+________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_______________"
+
