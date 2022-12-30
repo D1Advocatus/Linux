@@ -62,7 +62,8 @@ chmod a+x /etc/xrdp/zorinos.sh
 fi
 
 # Use the script to setup the ZorinOS session
-sed -i_orig -e 's/startwm/startzorinos/g' /etc/xrdp/sesman.ini
+sed -i_orig -e 's/startwm/zorinos/g' /etc/xrdp/sesman.ini
+
 # Rename the redirected drives to 'shared-drives'
 sed -i -e 's/FuseMountName=thinclient_drives/FuseMountName=shared-drives/g' /etc/xrdp/sesman.ini
 
