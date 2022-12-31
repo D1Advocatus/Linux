@@ -39,13 +39,10 @@ sudo install -t "/var/lib/xrdp-pulseaudio-installer" -D -m 644 *.so
 
 # Reconfiguring services
 systemctl daemon-reload
-systemctl --user status pulseaudio.socket
-systemctl --user restart pulseaudio
-pulseaudio -k
-systemctl --user enable pulseaudio
+@reboot /usr/bin/pulseaudio -k
 
 echo "Installation completed."
-echo "Reboot your machine and change the Sound Output Device to xrdp sink."
+echo "Reboot your machine, if necessary change the Sound Output Device to xrdp sink."
 echo "____________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_________________
 ________________________¶¶¶_______________________
 ________________________¶¶¶_______________________
