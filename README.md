@@ -1,8 +1,10 @@
-Click on the relavant scrip.
+1 - Click on the relavant scrip.
 
-Click raw or download raw file.
+2 - Click raw or download raw file.
 
-Go to the Download folder and open terminal.
+3- Go to the Download folder and right click and select open terminal.
+
+4- Name or Rename the relevant script to install.sh
 
 Run the following commmands:
 
