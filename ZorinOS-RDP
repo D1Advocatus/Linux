@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+# This is a script to auto-enable Microsoft RDP protocol on Zorin OS 24.x
+#
+# After the installation, you will be able to RDP into your Zorin OS.
+#
+# Many thanks to DG @ https://medium.com/itversity/how-to-set-up-rdp-on-ubuntu-24-04-for-remote-access-b008411727b7
+#
+###############################################################################
+echo "1-Let's update your Distro"
+#
+if [ "$(id -u)" -ne 0 ]; then
+    echo 'You must run this script with root privileges' >&2
+    exit 1
+fi
+
+apt update && apt upgrade -y
+
+if [ -f /var/run/reboot-required ]; then
+    echo "You must reboot the PC to proceed with the installation." >&2
+    echo "Please reboot and re-run this script to finish the install." >&2
+    exit 1
+fi
+
+###############################################################################
+echo "2-Installing GNOME Desktop Environment"
+#
+# Installing GNOME
+sudo apt install ubuntu-gnome-desktop -y
+
+###############################################################################
+# Open-source Remote Desktop Protocol Server (xrdp)
+# http://xrdp.org/
+#
+echo "3-Installing XRDP"
+#
+# Installing xrdp
+apt install -y xrdp
+
+###############################################################################
+#Add XRDP User to ssl-cert Group: This is necessary for secure connections.
+#
+# Adding XRDP User to ssl-cert Group
+echo "4-Installing SSL-Certificate"
+#
+sudo adduser xrdp ssl-cert
+
+###############################################################################
+# This will enable RDP traffic to reach your server. Always remember to keep your firewall secure by only allowing necessary ports.
+echo "5-Configuring Firewall"
+#
+# Allowing Firewall Access to port 3389/tcp
+sudo ufw allow 3389/tcp
+sudo ufw reload
+
+###############################################################################
+echo "6-Reconfiguring services"
+#
+# Reconfiguring services
+systemctl daemon-reload
+systemctl start xrdp
+#
+# End XRDP
+###############################################################################
+
+echo "Installation is complete."
+echo "Reboot your machine to begin using XRDP."
+echo "____________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_________________
+________________________¶¶¶_______________________
+________________________¶¶¶_______________________
+___________¶¶___¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___¶¶__________
+_________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶________
+_________¶¶¶¶¶¶¶¶______¶¶¶¶¶_____¶¶¶¶¶¶¶¶¶________
+__________¶¶¶___________¶¶¶___________¶¶¶_________
+__________¶¶¶___________¶¶¶___________¶¶¶_________
+________¶¶¶¶¶¶__________¶¶¶__________¶¶¶¶¶________
+________¶¶¶¶¶¶__________¶¶¶__________¶¶¶¶¶________
+________¶__¶_¶__________¶¶¶_________¶¶_¶_¶¶_______
+_______¶¶_¶¶_¶¶_________¶¶¶_________¶¶_¶_¶¶_______
+_______¶¶_¶¶__¶_________¶¶¶________¶¶__¶__¶¶______
+______¶¶__¶¶__¶¶________¶¶¶________¶___¶___¶______
+______¶___¶¶___¶¶_______¶¶¶_______¶¶___¶___¶¶_____
+_____¶¶___¶¶___¶¶_______¶¶¶______1¶____¶____¶1____
+____1¶____¶¶____¶¶______¶¶¶______¶1____¶____1¶____
+____¶1____¶¶_____¶______¶¶¶_____¶¶_____¶_____¶¶___
+___¶¶_____¶¶_____¶¶_____¶¶¶_____¶______¶______¶___
+___¶______¶¶______¶¶____¶¶¶____¶¶______¶______¶¶__
+__¶________¶_______¶____¶¶¶____¶_______¶_______¶__
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+___¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_____¶¶¶_____¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__
+______¶¶¶¶¶¶¶¶¶¶___¶¶¶¶¶¶¶¶¶¶¶¶____¶¶¶¶¶¶¶¶¶______
+________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_______________
+_______________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_______________
+________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_______________"
