@@ -6,7 +6,7 @@
 
 4- Name or Rename the relevant script to install.sh
 
-On a Terminal Run the following commmands:
+Run the following commmands:
 
 1 - chmod +x install.sh
 
