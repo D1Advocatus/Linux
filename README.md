@@ -1,6 +1,6 @@
-#⚙️ Installation Guide
+# ⚙️ Installation Guide
 
-##📥 Steps to Download & Prepare the Script
+## 📥 Steps to Download & Prepare the Script
 
 1. Click on the relevant script file in the repository.
 
@@ -12,7 +12,7 @@
 
 5. Rename the script (if needed) to install.sh for compatibility.
 
-##🚀Running the Installation
+## 🚀Running the Installation
 
 Run the following commands in your terminal:
 
@@ -21,7 +21,7 @@ bash
 chmod +x install.sh
 sudo ./install.sh
 ```
-##📝 Notes
+## 📝 Notes
 
 ✅ Ensure you have the necessary permissions to execute scripts on your system.
 
