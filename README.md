@@ -12,14 +12,18 @@
 
 5. Rename the script (if needed) to install.sh for compatibility.
 
-## 🚀Running the Installation
+## 🚀 Running the Installation
 
 Run the following commands in your terminal:
 
 bash
 ```
-chmod +x install.sh
-sudo ./install.sh
+# Make the script executable
+chmod +x install.sh 
+
+# Run the script with root permissions
+sudo ./install.sh      
+
 ```
 ## 📝 Notes
 
