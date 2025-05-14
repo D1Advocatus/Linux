@@ -1,13 +1,28 @@
-1 - Click on the relavant scrip.
+⚙️ Installation Guide
 
-2 - Click raw or download raw file.
+📥 Steps to Download & Prepare the Script
 
-3- Go to the Download folder and right click and select open terminal.
+1. Click on the relevant script file in the repository.
 
-4- Name or Rename the relevant script to install.sh
+2. Select Raw or Download Raw File to save it to your system.
 
-Run the following commmands:
+3. Navigate to your Downloads folder.
 
-1 - chmod +x install.sh
+4. Right-click inside the folder and select Open Terminal.
 
-2 - sudo ./install.sh
+5. Rename the script (if needed) to install.sh for compatibility.
+
+🚀Running the Installation
+
+Run the following commands in your terminal:
+
+bash
+chmod +x install.sh
+sudo ./install.sh
+
+📝 Notes
+✅ Ensure you have the necessary permissions to execute scripts on your system.
+
+✅ If the script requires dependencies, install them before running.
+
+✅ For troubleshooting, check the script's documentation or logs.
